@@ -1,5 +1,5 @@
 /.idea
 /node_modules
-/public/scripts
+/public/scripts/
 package-lock.json
 yarn.lock
