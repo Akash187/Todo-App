@@ -17,6 +17,7 @@ class TodoApp extends React.Component{
   }
 };
 
+
 class Header extends React.Component{
   render(){
     return(
@@ -28,20 +29,34 @@ class Header extends React.Component{
   }
 }
 
+
 class Action extends React.Component{
+  handlePick() {
+    alert('Handle Pick');
+  }
   render(){
     return(
       <div>
-        <button>What should I do?</button>
+        <button onClick={this.handlePick}>What should I do?</button>
       </div>
     )
   }
 }
 
+
 class Options extends React.Component{
+  constructor(props){
+    super(props);
+    this.handleRemoveAll = this.handleRemoveAll.bind(this);
+  }
+  handleRemoveAll(){
+    console.log(this.props.options);
+    //alert('Remove all');
+  }
   render(){
     return(
       <div>
+        <button onClick={this.handleRemoveAll}>Remove All</button>
         <p>Options component here</p>
         {this.props.options.map(option =>
           <Option key={option} option={option}/>
@@ -50,6 +65,7 @@ class Options extends React.Component{
     )
   }
 }
+
 
 class Option extends React.Component{
   render(){
@@ -61,11 +77,27 @@ class Option extends React.Component{
   }
 }
 
+
 class AddOption extends React.Component{
+  handleAddOptions(e) {
+    e.preventDefault();
+    const option = e.target.elements.option.value.trim();
+    if (option) {
+      alert(option);
+      e.target.elements.option.value = '';
+    }
+    else{
+      console.log("Hello world!");
+    }
+  }
+
   render(){
     return(
       <div>
-        <button>AddOption</button>
+        <form onSubmit={this.handleAddOptions}>
+          <input type="text" name="option"/>
+          <button>AddOption</button>
+        </form>
       </div>
     )
   }
