@@ -3,11 +3,14 @@ const appRoot = document.getElementById('app');
 
 class TodoApp extends React.Component{
   render(){
+    const title = 'Todo App';
+    const subtitle = 'Put your life in the hands of a computer';
+    const options = ['WD', 'DS', 'AD'];
     return(
       <div>
-        <Header/>
+        <Header title={title} subtitle={subtitle}/>
         <Action/>
-        <Options/>
+        <Options options={options}/>
         <AddOption/>
       </div>
     )
@@ -18,8 +21,8 @@ class Header extends React.Component{
   render(){
     return(
       <div>
-        <h1>ToDo App</h1>
-        <h3>Put your life in the hands of a computer</h3>
+        <h1>{this.props.title}</h1>
+        <h3>{this.props.subtitle}</h3>
       </div>
     )
   }
@@ -40,7 +43,9 @@ class Options extends React.Component{
     return(
       <div>
         <p>Options component here</p>
-        <Option/>
+        {this.props.options.map(option =>
+          <Option key={option} option={option}/>
+        )}
       </div>
     )
   }
@@ -50,7 +55,7 @@ class Option extends React.Component{
   render(){
     return(
       <div>
-        <p>Option component here</p>
+        <p>{this.props.option}</p>
       </div>
     )
   }
