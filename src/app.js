@@ -6,6 +6,7 @@ class TodoApp extends React.Component{
     super(props);
     this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
     this.handlePick = this.handlePick.bind(this);
+    this.handleAddOption = this.handleAddOption.bind(this);
     this.state = {
       options: ['WD', 'DS', 'AD']
     };
@@ -21,6 +22,18 @@ class TodoApp extends React.Component{
     const randomNum = Math.floor(Math.random() * this.state.options.length);
     alert(this.state.options[randomNum]);
   }
+  handleAddOption(option){
+    if(!option){
+      return 'Enter valid value to add item';
+    }else if(this.state.options.indexOf(option) > -1){
+      return 'This option already exists';
+    }
+    this.setState((prevState) => {
+      return {
+        options: prevState.options.concat(option)
+    }
+    });
+  }
   render(){
     const title = 'Todo App';
     const subtitle = 'Put your life in the hands of a computer';
@@ -35,7 +48,9 @@ class TodoApp extends React.Component{
           options={this.state.options}
           handleDeleteOptions={this.handleDeleteOptions}
         />
-        <AddOption/>
+        <AddOption
+          handleAddOption = {this.handleAddOption}
+        />
       </div>
     )
   }
@@ -92,22 +107,34 @@ class Option extends React.Component{
 
 
 class AddOption extends React.Component{
-  handleAddOptions(e) {
+
+  constructor(props){
+    super(props);
+    this.addOption = this.addOption.bind(this);
+    this.state = {
+      error : undefined
+    }
+  }
+  addOption(e) {
     e.preventDefault();
     const option = e.target.elements.option.value.trim();
-    if (option) {
-      alert(option);
+    const error = this.props.handleAddOption(option);
+    console.log(error);
+    if(!error){
       e.target.elements.option.value = '';
     }
-    else{
-      console.log("Hello world!");
-    }
+    this.setState(() => {
+      return {
+        error
+      }
+    });
   }
 
   render(){
     return(
       <div>
-        <form onSubmit={this.handleAddOptions}>
+        {this.state.error && <p>{this.state.error}</p>}
+        <form onSubmit={this.addOption}>
           <input type="text" name="option"/>
           <button>AddOption</button>
         </form>
