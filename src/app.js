@@ -9,8 +9,28 @@ class TodoApp extends React.Component {
     this.handlePick = this.handlePick.bind(this);
     this.handleAddOption = this.handleAddOption.bind(this);
     this.state = {
-      options: ['WD', 'DS', 'AD']
+      options: []
     };
+  }
+
+  componentDidMount(){
+    try{
+      const json = localStorage.getItem('options');
+      if(json){
+        const options = JSON.parse(json);
+        this.setState(() => ({options}));
+      }
+    }catch (e){
+      //Do Nothing
+    }
+
+  }
+
+  componentDidUpdate(prevProps, prevState){
+    if(prevState.options.length !== this.state.options.length){
+      const json = JSON.stringify(this.state.options);
+      localStorage.setItem('options', json);
+    }
   }
 
   handleDeleteOptions() {
