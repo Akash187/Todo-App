@@ -6,7 +6,7 @@ module.exports = {
   mode: 'production',
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'public')
+    path: path.join(__dirname, 'public')
   },
   module: {
     rules: [{
@@ -15,5 +15,8 @@ module.exports = {
       exclude:/node_modules/
     }]
   },
-  devtool: 'cheap-module-eval-source-map'
+  devtool: 'cheap-module-eval-source-map',
+  devServer: {
+    contentBase: path.join(__dirname, 'public')
+  }
 };
