@@ -3,15 +3,18 @@ import AddOption from './AddOption';
 import Options from './Options';
 import Action from './Action';
 import Header from './Header';
+import OptionModal from './OptionModal';
 
 export default class TodoApp extends React.Component {
   state = {
-    options: []
+    options: [],
+    modalDefault: undefined
   };
 
   handleDeleteOptions = () => {
     this.setState(() => ({
-      options: []
+      options: [],
+      selectedOption: undefined
     }));
   };
 
@@ -25,7 +28,15 @@ export default class TodoApp extends React.Component {
 
   handlePick = () => {
     const randomNum = Math.floor(Math.random() * this.state.options.length);
-    alert(this.state.options[randomNum]);
+    this.setState(() =>
+      ({selectedOption: this.state.options[randomNum]})
+    );
+  };
+
+  handleClearModal = () => {
+    this.setState(() => ({
+      selectedOption: undefined
+    }));
   };
 
   handleAddOption = (option) => {
@@ -39,21 +50,21 @@ export default class TodoApp extends React.Component {
     );
   };
 
-  componentDidMount(){
-    try{
+  componentDidMount() {
+    try {
       const json = localStorage.getItem('options');
-      if(json){
+      if (json) {
         const options = JSON.parse(json);
         this.setState(() => ({options}));
       }
-    }catch (e){
+    } catch (e) {
       //Do Nothing
     }
 
   }
 
-  componentDidUpdate(prevProps, prevState){
-    if(prevState.options.length !== this.state.options.length){
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevState.options.length !== this.state.options.length) {
       const json = JSON.stringify(this.state.options);
       localStorage.setItem('options', json);
     }
@@ -69,6 +80,10 @@ export default class TodoApp extends React.Component {
           hasOptions={this.state.options.length > 0}
           handlePick={this.handlePick}
         />
+        <OptionModal
+          hasOptions={this.state.options.length > 0}
+          handlePick={this.state.selectedOption} handleClearModal={this.handleClearModal}
+        />
         <Options
           options={this.state.options}
           handleDeleteOptions={this.handleDeleteOptions}
@@ -77,6 +92,7 @@ export default class TodoApp extends React.Component {
         <AddOption
           handleAddOption={this.handleAddOption}
         />
+        <OptionModal/>
       </div>
     )
   }
